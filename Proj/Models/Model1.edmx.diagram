@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a9dd64c8799c40009b1e557e9ab9dd3a" Name="Diagram1">
+        <EntityTypeShape EntityType="projectModel.customer" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="projectModel.Order" Width="1.5" PointX="3" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="projectModel.Retention" Width="1.5" PointX="5.25" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="projectModel.service" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="projectModel.Transaction" Width="1.5" PointX="8.25" PointY="3.125" IsExpanded="true" />
+        <AssociationConnector Association="projectModel.FK__Orders__customer__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="projectModel.FK__Retention__custo__38996AB5" ManuallyRouted="false" />
+        <AssociationConnector Association="projectModel.FK__Transacti__custo__3D5E1FD2" ManuallyRouted="false" />
+        <AssociationConnector Association="projectModel.FK__Orders__serviceI__35BCFE0A" ManuallyRouted="false" />
+        <AssociationConnector Association="projectModel.FK__Retention__order__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="projectModel.FK__Transacti__order__3C69FB99" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

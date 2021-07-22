@@ -1,0 +1,424 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="projectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="customerId" />
+          </Key>
+          <Property Name="customerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="customerName" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="location" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="orderId" />
+          </Key>
+          <Property Name="orderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="customerId" Type="int" Nullable="false" />
+          <Property Name="serviceId" Type="int" Nullable="false" />
+          <Property Name="orderAmount" Type="int" Nullable="false" />
+          <Property Name="dat" Type="date" Nullable="false" />
+          <Property Name="numberOfService" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Retention">
+          <Key>
+            <PropertyRef Name="retentionId" />
+          </Key>
+          <Property Name="retentionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="customerId" Type="int" />
+          <Property Name="orderId" Type="int" />
+          <Property Name="cancelStatus" Type="bit" />
+          <Property Name="cancelDate" Type="date" />
+          <Property Name="totalCancelAmount" Type="int" />
+          <Property Name="updateStatus" Type="bit" />
+          <Property Name="updateDate" Type="date" />
+          <Property Name="totalUpdateAmount" Type="int" />
+        </EntityType>
+        <EntityType Name="service">
+          <Key>
+            <PropertyRef Name="serviceId" />
+          </Key>
+          <Property Name="serviceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="serviceAmount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Transactions">
+          <Key>
+            <PropertyRef Name="transactionId" />
+          </Key>
+          <Property Name="transactionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="orderId" Type="int" />
+          <Property Name="customerid" Type="int" />
+          <Property Name="dat" Type="date" />
+          <Property Name="transactionType" Type="varchar" MaxLength="250" />
+          <Property Name="transactionStatus" Type="varchar" MaxLength="250" />
+          <Property Name="transactionAmount" Type="int" />
+        </EntityType>
+        <Association Name="FK__Orders__customer__34C8D9D1">
+          <End Role="customer" Type="Self.customer" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="customerId" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="customerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__serviceI__35BCFE0A">
+          <End Role="service" Type="Self.service" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="service">
+              <PropertyRef Name="serviceId" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="serviceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Retention__custo__38996AB5">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="Retention" Type="Self.Retention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="customerId" />
+            </Principal>
+            <Dependent Role="Retention">
+              <PropertyRef Name="customerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Retention__order__398D8EEE">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
+          <End Role="Retention" Type="Self.Retention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="orderId" />
+            </Principal>
+            <Dependent Role="Retention">
+              <PropertyRef Name="orderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transacti__custo__3D5E1FD2">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="customerId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="customerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transacti__order__3C69FB99">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="orderId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="orderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="projectModelStoreContainer">
+          <EntitySet Name="customer" EntityType="Self.customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Retention" EntityType="Self.Retention" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="service" EntityType="Self.service" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Orders__customer__34C8D9D1" Association="Self.FK__Orders__customer__34C8D9D1">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__serviceI__35BCFE0A" Association="Self.FK__Orders__serviceI__35BCFE0A">
+            <End Role="service" EntitySet="service" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Retention__custo__38996AB5" Association="Self.FK__Retention__custo__38996AB5">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="Retention" EntitySet="Retention" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Retention__order__398D8EEE" Association="Self.FK__Retention__order__398D8EEE">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Retention" EntitySet="Retention" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transacti__custo__3D5E1FD2" Association="Self.FK__Transacti__custo__3D5E1FD2">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transacti__order__3C69FB99" Association="Self.FK__Transacti__order__3C69FB99">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="projectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="customerId" />
+          </Key>
+          <Property Name="customerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="customerName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="location" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__customer__34C8D9D1" FromRole="customer" ToRole="Orders" />
+          <NavigationProperty Name="Retentions" Relationship="Self.FK__Retention__custo__38996AB5" FromRole="customer" ToRole="Retention" />
+          <NavigationProperty Name="Transactions" Relationship="Self.FK__Transacti__custo__3D5E1FD2" FromRole="customer" ToRole="Transactions" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="orderId" />
+          </Key>
+          <Property Name="orderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="customerId" Type="Int32" Nullable="false" />
+          <Property Name="serviceId" Type="Int32" Nullable="false" />
+          <Property Name="orderAmount" Type="Int32" Nullable="false" />
+          <Property Name="dat" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="numberOfService" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="customer" Relationship="Self.FK__Orders__customer__34C8D9D1" FromRole="Orders" ToRole="customer" />
+          <NavigationProperty Name="service" Relationship="Self.FK__Orders__serviceI__35BCFE0A" FromRole="Orders" ToRole="service" />
+          <NavigationProperty Name="Retentions" Relationship="Self.FK__Retention__order__398D8EEE" FromRole="Orders" ToRole="Retention" />
+          <NavigationProperty Name="Transactions" Relationship="Self.FK__Transacti__order__3C69FB99" FromRole="Orders" ToRole="Transactions" />
+        </EntityType>
+        <EntityType Name="Retention">
+          <Key>
+            <PropertyRef Name="retentionId" />
+          </Key>
+          <Property Name="retentionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="customerId" Type="Int32" />
+          <Property Name="orderId" Type="Int32" />
+          <Property Name="cancelStatus" Type="Boolean" />
+          <Property Name="cancelDate" Type="DateTime" Precision="0" />
+          <Property Name="totalCancelAmount" Type="Int32" />
+          <Property Name="updateStatus" Type="Boolean" />
+          <Property Name="updateDate" Type="DateTime" Precision="0" />
+          <Property Name="totalUpdateAmount" Type="Int32" />
+          <NavigationProperty Name="customer" Relationship="Self.FK__Retention__custo__38996AB5" FromRole="Retention" ToRole="customer" />
+          <NavigationProperty Name="Order" Relationship="Self.FK__Retention__order__398D8EEE" FromRole="Retention" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="service">
+          <Key>
+            <PropertyRef Name="serviceId" />
+          </Key>
+          <Property Name="serviceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="serviceAmount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__serviceI__35BCFE0A" FromRole="service" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="transactionId" />
+          </Key>
+          <Property Name="transactionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="orderId" Type="Int32" />
+          <Property Name="customerid" Type="Int32" />
+          <Property Name="dat" Type="DateTime" Precision="0" />
+          <Property Name="transactionType" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="transactionStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="transactionAmount" Type="Int32" />
+          <NavigationProperty Name="customer" Relationship="Self.FK__Transacti__custo__3D5E1FD2" FromRole="Transactions" ToRole="customer" />
+          <NavigationProperty Name="Order" Relationship="Self.FK__Transacti__order__3C69FB99" FromRole="Transactions" ToRole="Orders" />
+        </EntityType>
+        <Association Name="FK__Orders__customer__34C8D9D1">
+          <End Role="customer" Type="Self.customer" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="customerId" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="customerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Retention__custo__38996AB5">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="Retention" Type="Self.Retention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="customerId" />
+            </Principal>
+            <Dependent Role="Retention">
+              <PropertyRef Name="customerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transacti__custo__3D5E1FD2">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="customerId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="customerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__serviceI__35BCFE0A">
+          <End Role="service" Type="Self.service" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="service">
+              <PropertyRef Name="serviceId" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="serviceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Retention__order__398D8EEE">
+          <End Role="Orders" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="Retention" Type="Self.Retention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="orderId" />
+            </Principal>
+            <Dependent Role="Retention">
+              <PropertyRef Name="orderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transacti__order__3C69FB99">
+          <End Role="Orders" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="orderId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="orderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="projectEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="customers" EntityType="Self.customer" />
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="Retentions" EntityType="Self.Retention" />
+          <EntitySet Name="services" EntityType="Self.service" />
+          <EntitySet Name="Transactions" EntityType="Self.Transaction" />
+          <AssociationSet Name="FK__Orders__customer__34C8D9D1" Association="Self.FK__Orders__customer__34C8D9D1">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Retention__custo__38996AB5" Association="Self.FK__Retention__custo__38996AB5">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="Retention" EntitySet="Retentions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transacti__custo__3D5E1FD2" Association="Self.FK__Transacti__custo__3D5E1FD2">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__serviceI__35BCFE0A" Association="Self.FK__Orders__serviceI__35BCFE0A">
+            <End Role="service" EntitySet="services" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Retention__order__398D8EEE" Association="Self.FK__Retention__order__398D8EEE">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Retention" EntitySet="Retentions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transacti__order__3C69FB99" Association="Self.FK__Transacti__order__3C69FB99">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="projectModelStoreContainer" CdmEntityContainer="projectEntities">
+          <EntitySetMapping Name="customers">
+            <EntityTypeMapping TypeName="projectModel.customer">
+              <MappingFragment StoreEntitySet="customer">
+                <ScalarProperty Name="customerId" ColumnName="customerId" />
+                <ScalarProperty Name="customerName" ColumnName="customerName" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="projectModel.Order">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="orderId" ColumnName="orderId" />
+                <ScalarProperty Name="customerId" ColumnName="customerId" />
+                <ScalarProperty Name="serviceId" ColumnName="serviceId" />
+                <ScalarProperty Name="orderAmount" ColumnName="orderAmount" />
+                <ScalarProperty Name="dat" ColumnName="dat" />
+                <ScalarProperty Name="numberOfService" ColumnName="numberOfService" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Retentions">
+            <EntityTypeMapping TypeName="projectModel.Retention">
+              <MappingFragment StoreEntitySet="Retention">
+                <ScalarProperty Name="retentionId" ColumnName="retentionId" />
+                <ScalarProperty Name="customerId" ColumnName="customerId" />
+                <ScalarProperty Name="orderId" ColumnName="orderId" />
+                <ScalarProperty Name="cancelStatus" ColumnName="cancelStatus" />
+                <ScalarProperty Name="cancelDate" ColumnName="cancelDate" />
+                <ScalarProperty Name="totalCancelAmount" ColumnName="totalCancelAmount" />
+                <ScalarProperty Name="updateStatus" ColumnName="updateStatus" />
+                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+                <ScalarProperty Name="totalUpdateAmount" ColumnName="totalUpdateAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="services">
+            <EntityTypeMapping TypeName="projectModel.service">
+              <MappingFragment StoreEntitySet="service">
+                <ScalarProperty Name="serviceId" ColumnName="serviceId" />
+                <ScalarProperty Name="serviceAmount" ColumnName="serviceAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transactions">
+            <EntityTypeMapping TypeName="projectModel.Transaction">
+              <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="transactionId" ColumnName="transactionId" />
+                <ScalarProperty Name="orderId" ColumnName="orderId" />
+                <ScalarProperty Name="customerid" ColumnName="customerid" />
+                <ScalarProperty Name="dat" ColumnName="dat" />
+                <ScalarProperty Name="transactionType" ColumnName="transactionType" />
+                <ScalarProperty Name="transactionStatus" ColumnName="transactionStatus" />
+                <ScalarProperty Name="transactionAmount" ColumnName="transactionAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
